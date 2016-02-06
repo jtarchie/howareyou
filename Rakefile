@@ -1,8 +1,6 @@
-require 'dotenv/tasks'
-require 'sinatra/activerecord/rake'
+require 'dotenv'
+Dotenv.load
 
-namespace :db do
-  task load_config: [:dotenv] do
-    require_relative 'app'
-  end
-end
+require_relative 'app'
+
+Rails.application.load_tasks

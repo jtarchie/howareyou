@@ -1,14 +1,20 @@
 source 'https://rubygems.org'
 
 gem 'dotenv'
-gem 'pg'
 gem 'puma'
 gem 'rake'
-gem 'sinatra'
-gem 'sinatra-activerecord'
+gem 'rails'
 gem 'twilio-ruby'
 
+group :production do
+  gem 'pg'
+end
+
 group :development do
+  gem 'rspec-rails'
   gem 'rubocop'
+  gem 'rubocop-rspec'
   gem 'shotgun'
+  gem 'sqlite3'
+  gem 'with_env'
 end
