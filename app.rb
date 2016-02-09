@@ -13,7 +13,7 @@ end
 class MessagesController < ActionController::Metal
   def create
     number = params.fetch('From')
-    unless number == ENV.fetch('PHONE_NUMBER')
+    unless ENV.fetch('PHONE_NUMBER').split(',').include?(number)
       self.status = 401
       self.response_body = ''
     else

@@ -13,6 +13,16 @@ describe 'howareyou.mobi', type: :request do
         expect(response.status).to eq 200
       end
     end
+
+    context 'with multiple phone numbers' do
+      it 'responds with a emoji text message' do
+        with_env('PHONE_NUMBER' => '+15551212,+15554444') do
+          get '/sms', 'From' => '+15554444', 'Body' => '', 'To' => ''
+          expect(response.body).to match %r{<\?xml version="1.0" encoding="UTF-8"\?><Response><Message>.*</Message></Response>}
+          expect(response.status).to eq 200
+        end
+      end
+    end
   end
 
   context 'when receiving text messages from a invalid phone number' do
