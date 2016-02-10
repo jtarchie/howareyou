@@ -19,5 +19,6 @@ group :development do
   gem 'rubocop-rspec'
   gem 'shotgun'
   gem 'sqlite3'
+  gem 'webmock'
   gem 'with_env'
 end

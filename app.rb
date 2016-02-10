@@ -10,6 +10,18 @@ end
 class Message < ActiveRecord::Base
 end
 
+class InvitesController < ActionController::Metal
+  def create
+    client = Twilio::REST::Client.new
+    client.messages.create(
+      from: ENV.fetch('TWILIO_NUMBER'),
+      to: params.fetch('From'),
+      body: 'Hey there!'
+    )
+    self.response_body = ''
+  end
+end
+
 class MessagesController < ActionController::Metal
   def create
     number = params.fetch('From')
@@ -37,12 +49,13 @@ end
 class HowAreYouApp < Rails::Application
   routes.append do
     get '/sms' => 'messages#create'
+    post '/invite' => 'invites#create'
   end
 
   config.cache_classes = true
 
   # uncomment below to display errors
-  config.consider_all_requests_local = Rails.env.development?
+  config.consider_all_requests_local = Rails.env.development? || Rails.env.test?
 
   # We need a secret token for session, cookies, etc.
   config.secret_key_base = ENV.fetch('SECRET_KEY_BASE')
