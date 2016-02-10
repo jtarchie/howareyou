@@ -80,6 +80,7 @@ class HowAreYouApp < Rails::Application
   end
 
   config.cache_classes = true
+  config.log_level     = :debug
 
   # uncomment below to display errors
   config.consider_all_requests_local = Rails.env.development? || Rails.env.test?
