@@ -10,7 +10,7 @@ end
 class Message < ActiveRecord::Base; end
 class PhoneNumber < ActiveRecord::Base; end
 
-class MessagesController < ActionController::Metal
+class MessagesController < ActionController::Base
   MESSAGES_REACTOR = {
     /^Invite (.*)$/ => lambda do |matches|
       number = matches[1]
