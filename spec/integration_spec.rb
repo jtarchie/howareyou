@@ -7,14 +7,14 @@ describe 'howareyou.mobi', type: :request do
 
   context 'when inviting a new user' do
     it 'sends a text message to that user' do
-      with_env('TWILIO_NUMBER' => '+15554444') do
-        stub = stub_request(:post, "https://fake_token:fake_token@api.twilio.com/2010-04-01/Accounts/fake_token/Messages.json")
-          .with(:body => {"Body"=>"Hey there!", "From"=>"+15554444", "To"=>"+15551212"})
-          .and_return(:body => "{}")
+      with_env('TWILIO_NUMBER' => '+15554444', 'PHONE_NUMBER' => '+15125555') do
+        stub = stub_request(:post, 'https://fake_token:fake_token@api.twilio.com/2010-04-01/Accounts/fake_token/Messages.json')
+               .with(body: { 'Body' => 'Hey there!', 'From' => '+15554444', 'To' => '+15551212' })
+               .and_return(body: '{}')
 
-        post '/invite', 'From' => '+15551212'
+        get '/sms', 'Body' => 'Invite +15551212', 'From' => '+15125555', 'To' => '+15554444'
 
-        expect(response.body).to eq ''
+        expect(response.body).to match %r{<\?xml version="1.0" encoding="UTF-8"\?><Response><Message>.*</Message></Response>}
         expect(response.status).to eq 200
         expect(stub).to have_been_requested
       end
