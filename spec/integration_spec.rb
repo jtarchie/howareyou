@@ -11,7 +11,7 @@ describe 'howareyou.mobi', type: :request do
     it 'sends a text message to that user' do
       with_env('TWILIO_NUMBER' => '+15554444') do
         stub = stub_request(:post, 'https://fake_token:fake_token@api.twilio.com/2010-04-01/Accounts/fake_token/Messages.json')
-               .with(body: { 'Body' => 'Hi, how are you?', 'From' => '+15554444', 'To' => '+17777777' })
+               .with(body: { 'Body' => 'Hi, how are you? Tell me with an emoji and a short message.', 'From' => '+15554444', 'To' => '+17777777' })
                .and_return(body: '{}')
 
         get '/sms', 'Body' => 'Invite +17777777', 'From' => '+15551212', 'To' => '+15554444'

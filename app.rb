@@ -22,7 +22,7 @@ class MessagesController < ActionController::Base
       client.messages.create(
         from: ENV.fetch('TWILIO_NUMBER'),
         to: number,
-        body: 'Hi, how are you?'
+        body: 'Hi, how are you? Tell me with an emoji and a short message.'
       )
     end
   }.freeze
