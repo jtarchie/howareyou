@@ -7,17 +7,21 @@ Twilio.configure do |config|
   config.auth_token  = ENV.fetch 'TWILIO_AUTH_TOKEN'
 end
 
-class Message < ActiveRecord::Base
-end
+class Message < ActiveRecord::Base; end
+class PhoneNumber < ActiveRecord::Base; end
 
 class MessagesController < ActionController::Metal
   MESSAGES_REACTOR = {
     /^Invite (.*)$/ => lambda do |matches|
+      number = matches[1]
+
+      PhoneNumber.create(number: number)
+
       client = Twilio::REST::Client.new
       client.messages.create(
         from: ENV.fetch('TWILIO_NUMBER'),
-        to: matches[1],
-        body: 'Hey there!'
+        to: number,
+        body: 'Hi, how are you?'
       )
     end
   }.freeze
@@ -56,7 +60,7 @@ class MessagesController < ActionController::Metal
   end
 
   def validate_phone_number!
-    unless ENV.fetch('PHONE_NUMBER').split(',').include?(params.fetch('From'))
+    unless PhoneNumber.where(number: params.fetch('From')).exists?
       self.status = 401
       self.response_body = ''
       return false

@@ -11,16 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_160_202_010_655) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+ActiveRecord::Schema.define(version: 20160210005253) do
 
-  create_table 'messages', force: :cascade do |t|
-    t.string   'incoming_message'
-    t.string   'outgoing_message'
-    t.string   'from_number'
-    t.string   'to_number'
-    t.datetime 'created_at',       null: false
-    t.datetime 'updated_at',       null: false
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "messages", force: :cascade do |t|
+    t.string   "incoming_message"
+    t.string   "outgoing_message"
+    t.string   "from_number"
+    t.string   "to_number"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
+
+  create_table "phone_numbers", force: :cascade do |t|
+    t.string "number"
+    t.index ["number"], name: "index_phone_numbers_on_number", unique: true, using: :btree
+  end
+
 end
