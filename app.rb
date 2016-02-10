@@ -1,6 +1,7 @@
-require 'active_record/railtie'
-require 'action_controller/railtie'
-require 'twilio-ruby'
+require 'bundler/setup'
+require "active_record/railtie"
+require "action_controller/railtie"
+Bundler.require(*Rails.groups)
 
 Twilio.configure do |config|
   config.account_sid = ENV.fetch 'TWILIO_ACCOUNT_SID'
@@ -79,6 +80,7 @@ class HowAreYouApp < Rails::Application
     config.middleware.use(Rack::TwilioWebhookAuthentication, ENV['TWILIO_AUTH_TOKEN'], '/sms')
   end
 
+  config.eager_load    = Rails.env.production?
   config.cache_classes = true
   config.log_level     = :debug
 
