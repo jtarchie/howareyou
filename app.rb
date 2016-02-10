@@ -52,6 +52,10 @@ class HowAreYouApp < Rails::Application
     post '/invite' => 'invites#create'
   end
 
+  unless Rails.env.test?
+    config.middleware.use(Rack::TwilioWebhookAuthentication, ENV['TWILIO_AUTH_TOKEN'], '/sms')
+  end
+
   config.cache_classes = true
 
   # uncomment below to display errors
