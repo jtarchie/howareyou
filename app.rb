@@ -13,9 +13,7 @@ class PhoneNumber < ActiveRecord::Base; end
 
 class MessagesController < ActionController::Base
   MESSAGES_REACTOR = {
-    /^Invite (.*)$/ => lambda do |matches|
-      number = matches[1]
-
+    /^Invite (.*)$/ => lambda do |_, number|
       PhoneNumber.create(number: number)
 
       client = Twilio::REST::Client.new
@@ -38,7 +36,7 @@ class MessagesController < ActionController::Base
     MESSAGES_REACTOR.each do |matcher, block|
       matches = params.fetch('Body', '').match(matcher)
       if matches
-        block.call(matches)
+        block.call(*matches)
         break
       end
     end
