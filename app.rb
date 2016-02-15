@@ -1,6 +1,6 @@
 require 'bundler/setup'
-require "active_record/railtie"
-require "action_controller/railtie"
+require 'active_record/railtie'
+require 'action_controller/railtie'
 Bundler.require(*Rails.groups)
 
 Twilio.configure do |config|
